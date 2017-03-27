@@ -6,37 +6,32 @@
  */
 
 #include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
+#include "read_array.c"
 
 int main(void) {
 
-    char *line;
-    size_t size;
-    int array_size;
-
-    getline(&line, &size, stdin);
-    array_size = atoi(line);
-
-    int heap[array_size];
-
-    int count = 0;
-
-    while(getline(&line, &size, stdin) != -1) {
-        heap[count] = atoi(line);
+    int size;
+    int* heap = read_array(&size);
+    
+    int count;
+    for (count = 0; count < size; count++) {
         int child = count;
         int parent = child / 2;
-        while(heap[parent] > heap[child]) {
+        while (heap[parent] > heap[child]) {
             int temp = heap[parent];
             heap[parent] = heap[child];
             heap[child] = temp;
             child = parent;
             parent = child / 2;
+            
+            if (parent == child) break; // should trigger once both are 0, i.e. when the top of the heap is reached
         }
-        count++;
     }
 
-    for(int i = 0; i < array_size; i++) {
+    int i;
+    for (i = 0; i < size; i++) {
         printf("%d\n", heap[i]);
     }
+    
+    free(heap);
 }
