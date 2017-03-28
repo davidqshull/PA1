@@ -16,15 +16,13 @@ int main(void) {
     int count;
     for (count = 0; count < size; count++) {
         int child = count;
-        int parent = child / 2;
+        int parent = (child - 1) / 2;
         while (heap[parent] > heap[child]) {
             int temp = heap[parent];
             heap[parent] = heap[child];
             heap[child] = temp;
             child = parent;
-            parent = child / 2;
-            
-            if (parent == child) break; // should trigger once both are 0, i.e. when the top of the heap is reached
+            parent = (child - 1) / 2;
         }
     }
 
